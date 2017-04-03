@@ -23,11 +23,11 @@ anova(fitA)
 B = read.csv("B1refined.csv")  # read csv file 
 
 # Plot
-plot(mydata$IV, mydata$DV)
+plot(B$IV, B$DV)
 
 # Linear model for log and factor
 fitB1 = lm(DV ~ log(IV), data = B)
 fitB2 = lm(DV ~ factor(IV), data = B)
 
-anova(fit1, fit2)
+anova(fitB1, fitB2)
 ##########################################################################################
