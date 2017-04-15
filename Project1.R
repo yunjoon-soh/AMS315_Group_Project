@@ -20,14 +20,20 @@ anova(fitA)
 # Part B
 
 # Read the file
-B = read.csv("B1refined.csv")  # read csv file 
+B = read.csv("B 1 .csv")  # read csv file 
 
 # Plot
 plot(B$IV, B$DV)
 
 # Linear model for log and factor
-fitB1 = lm(DV ~ log(IV), data = B)
-fitB2 = lm(DV ~ factor(IV), data = B)
+lnfit1 = lm(DV ~ log(IV), data = B)
+lnfit2 = lm(DV ~ factor(IV), data = B)
 
-anova(fitB1, fitB2)
+# Analyze
+aovB = aov(DV ~ log(IV), data = B)
+anova(lnfit1, lnfit2)
+
+# Output results
+summary(aovB)
+
 ##########################################################################################
