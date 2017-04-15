@@ -16,6 +16,9 @@ fitA = lm(formula = A$DV ~ A$IV)
 summary(fitA)
 anova(fitA)
 
+# Calculate confidence interval
+confint(fitA, level = 0.99)
+
 ##########################################################################################
 # Part B
 
@@ -35,5 +38,8 @@ anova(lnfit1, lnfit2)
 
 # Output results
 summary(aovB)
+
+# Calculate confidence interval
+confint(lnfit1, level = 0.99)
 
 ##########################################################################################
