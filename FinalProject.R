@@ -5,27 +5,32 @@ df = data.frame(input)
 
 # Generate a big plot
 cnames = colnames(input)
+
 par(mfrow=c(5,4))
-for(i in 1:20){
-  #ti=paste("DV vs ", cnames[i])
- # plot(input[[i]], input[[21]])
-#  title(main=ti, xlab=str(i))
-  var(input[[i]], input$Y)
-}
-
 
 for(i in 1:20){
-  print(var(input[[i]], input$Y))
+  # plot it
+  plot(input[[i]], input[[21]])
+  
+  # Create title for each plot
+  ti=paste("DV vs ", cnames[i])
+  
+  # set title
+  title(main=ti, xlab=str(i))
 }
 
-k <- ncol(M) #number of variables
-n <- nrow(M) #number of subjects
+cvc = cov(df)
 
-#create means for each column
-M_mean <- matrix(data=1, nrow=n) %*% cbind(mean(a),mean(b),mean(c),mean(d),mean(e)) 
+anova(lm(Y ~ E1 + E2 + E3 + E4 + E5 + G1 + G2 + G3 + G4 + G5 + G6 + G7 + G8 + G9 + G10 + G11 + G12 + G13 + G14 + G15, data = df))
 
-#creates a difference matrix
-D <- M - M_mean
+require("MASS")
+require("leaps")
 
-#creates the covariance matrix
-C <- (n-1)^-1 t(D) %*% D
+reg1 = regsubsets(Y ~ E1 + E2 + E3 + E4 + E5 + G1 + G2 + G3 + G4 + G5 + G6 + G7 + G8 + G9 + G10 + G11 + G12 + G13 + G14 + G15, data = df)
+summary(reg1)
+
+reg2 = regsubsets(Y ~ (E3 + E4 + E5 + G1 + G2 + G6 + G10 + G13)^2, data=df)
+summary(reg2)
+
+reg3 = regsubsets(Y ~ (E1 + E2 + E3 + E4 + E5 + G1 + G2 + G3 + G4 + G5 + G6 + G7 + G8 + G9 + G10 + G11 + G12 + G13 + G14 + G15)^2, data = df, really.big = T)
+summary(reg3)
