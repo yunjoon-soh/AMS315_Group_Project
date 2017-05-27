@@ -27,7 +27,7 @@ drawPlot <- function(){
 input = read.csv("Group1.csv", header = T)
 df = data.frame(input)
 
-# Box-cox transformation exp(Y-45.7)
+# Box-cox transformation alternative : exp(Y-45.7)
 tY = exp(df$Y -45.7)
 df = cbind(df, tY)
 
@@ -61,6 +61,7 @@ for(i in 6:19){
   }
 }
 
+# Quadradic (i.e., E1 raised to power of 2)
 for(i in 1:20){
   toAdd = input[[i]] * input[[i]]
   ti = paste(cnames[i], paste("*", cnames[i]))
@@ -69,13 +70,7 @@ for(i in 1:20){
   index=index+1
 }
 
-rm(i)
-rm(j)
-rm(index)
-rm(toAdd)
-rm(tY)
-rm(ti)
-rm(cnames)
+rm(i,j, index, toAdd, tY, ti, cnames)
 
 # End of Data Creation
 ################################################################################
@@ -100,12 +95,12 @@ require("MASS")
 
 # Residual standard error: 0.1078 on 2274 degrees of freedom
 # Multiple R-squared:  0.8351,	Adjusted R-squared:  0.8346
-# E3 + E4 + G6 + G10 +            E3 * G13 + G1 + G13
+# E3 + E4 + G6 + G10 +            E3:G13 + G1 + G13
 fit_mini = lm(tY~E3 + E4 + G6 + G10 + E3:G13 + G1 + G13, data=df)
 
 # Residual standard error: 0.1078 on 2273 degrees of freedom
 # Multiple R-squared:  0.8351,	Adjusted R-squared:  0.8345 
-#      E4 + G6 + G10 +            E3 * G13 + G1 * G6
+#      E4 + G6 + G10 +               + E3:G13 + G1:G6
 fit_sas = lm(tY~ E4 + G6 + G10 + E3:G13 + G1:G6, data=df)
 
 # Residual standard error: 0.1076 on 2270 degrees of freedom
@@ -118,6 +113,8 @@ fit_r = step(lm(tY~1, data=df), method = "forward", scope = as.formula(formulaSt
 # E3 + E4 + G6 + G10 + G13 + G1 + E3 * G13
 fit_r2 = lm(tY ~ E3 + E4 + G6 + G10 + G13 + G1 + E3:G13, data=df)
 
-rm(cnames)
-rm(i)
+rm(i, cnames)
+
+# Confidence Interval
+confint(fit_sas, level = .99)
 ################################################################################
